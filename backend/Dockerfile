@@ -11,6 +11,22 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python
 # Copy poetry.lock* in case it doesn't exist in the repo
 COPY ./pyproject.toml ./poetry.lock* /app/
 
+# Установите зависимости для Google Chrome
+RUN apt-get update && apt-get install -y \
+    wget \
+    apt-transport-https \
+    ca-certificates \
+    gnupg
+
+# Скачайте и установите Google Chrome
+RUN wget -q -O google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    rm google-chrome-stable_current_amd64.deb && \
+    apt-get -f install -y
+
+# Проверьте версию Chrome
+RUN echo "Chrome: " && google-chrome --version
+
 # Allow installing dev dependencies to run tests
 ARG INSTALL_DEV=false
 RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --only main ; fi"

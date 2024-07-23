@@ -20,7 +20,26 @@ from app.utils import (
 
 router = APIRouter()
 
+from ..app.service.service import service
 
+@router.get("/create_map_organizations/{type_parse}/{id_ya}")
+async def get_reviews(type_parse: str, id_ya: int):
+    return service.create_map_organizations(id_ya, type_parse)
+
+
+@router.post("/read_map_organizations/{id_ya}")
+async def get_reviews(id_ya: int):
+    return service.read_map_organizations(id_ya)
+
+
+@router.get("/update_map_organizations/{type_parse}/{id_ya}")
+async def get_reviews(id_ya: int, type_parse: str):
+    return service.update_map_organizations(id_ya, type_parse)
+
+
+@router.delete("/delete_map_organizations/{id_ya}")
+async def get_reviews(id_ya: int):
+    return service.delete_map_organizations(id_ya)
 @router.post("/login/access-token")
 def login_access_token(
     session: SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
